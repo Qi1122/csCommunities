@@ -57,7 +57,7 @@ def addEdges(graph, data):
         refs = row['references']
         # if not there or NaN, then add no edges, else
         for ref in refs:
-            graph.add_weighted_edges_from([(id, ref, 1)])
+            graph.add_weighted_edges_from([(id, ref, 1)]) # may change on defref
     return graph
 
 test = readJSON("data/")
