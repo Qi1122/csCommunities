@@ -36,7 +36,7 @@ def initGraph(data):
     ''' Initialize a graph using the different paper ids
     @param data DataFrame: Data frame containing citation information
     '''
-    G = nx.Graph()
+    G = nx.DiGraph()
     for id in data['id']:
         G.add_node(id)
     community_dict = dict(zip(data.id,data.community))
@@ -47,7 +47,7 @@ def initGraph(data):
     nx.set_node_attributes(G, venue_dict, 'venue')
     return G
 
-def addEdgesGraph(graph, data):
+def addEdges(graph, data):
     ''' Adds edges between different nodes
     @param graph Graph: Graph containing nodes from initGraph()
     @param data DataFrame: Data frame containing citation information
@@ -57,7 +57,7 @@ def addEdgesGraph(graph, data):
         refs = row['references']
         # if not there or NaN, then add no edges, else
         for ref in refs:
-            graph.add_edge(id, ref)
+            graph.add_weighted_edges_from([(id, ref, 1)])
     return graph
 
 test = readJSON("data/")
@@ -65,4 +65,4 @@ test = preprocessData(test)
 test = defineCommunity(test)
 
 citation_graph = initGraph(test)
-citation_graph = addEdgesGraph(citation_graph, test)
+citation_graph = addEdges(citation_graph, test)

@@ -1,5 +1,5 @@
 # csCommunities
-### Authors: Peter Xenopoulos, Qi Sun
+##### Authors: Peter Xenopoulos, Qi Sun
 This repository contains the code for visual exploration of computer science research communities.
 
 ## Data
