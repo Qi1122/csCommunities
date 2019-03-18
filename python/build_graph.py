@@ -11,6 +11,7 @@ def readJSON(path):
     data = pd.DataFrame()
     files = listdir(path)
     for file in files:
+        print("Reading ", file)
         filePath = path + file
         data = data.append(pd.read_json(filePath, lines = True))
     return data
@@ -18,7 +19,11 @@ def readJSON(path):
 def defineCommunity(data):
     ''' Defines different computer science research communities by venue
     '''
-    return None
+    communities = pd.read_csv("communities.csv")
+    venues = communities.venue
+    dataFiltered = data[data.venue.isin(venues)]
+    dataFiltered = dataFiltered.merge(communities, on = "venue", how = "left")
+    return dataFiltered
 
 def preprocessData(data):
     ''' Preprocess and clean the data
@@ -34,8 +39,8 @@ def initGraph(data):
     G = nx.Graph()
     for id in data['id']:
         G.add_node(id)
-    community_dict = data[['id', 'venue']]
-    nx.set_node_attributes(G, 'community', community_dict)
+    community_dict = dict(zip(data.id,data.community))
+    nx.set_node_attributes(G, community_dict, 'community')
     return G
 
 def addEdgesGraph(graph, data):
@@ -52,6 +57,8 @@ def addEdgesGraph(graph, data):
     return graph
 
 test = readJSON("data/")
+test = preprocessData(test)
+test = defineCommunity(test)
 
 for index, row in test.iterrows():
     print(row['id'])
