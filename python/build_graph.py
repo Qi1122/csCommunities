@@ -41,6 +41,10 @@ def initGraph(data):
         G.add_node(id)
     community_dict = dict(zip(data.id,data.community))
     nx.set_node_attributes(G, community_dict, 'community')
+    year_dict = dict(zip(data.id,data.year))
+    nx.set_node_attributes(G, year_dict, 'year')
+    venue_dict = dict(zip(data.id,data.venue))
+    nx.set_node_attributes(G, venue_dict, 'venue')
     return G
 
 def addEdgesGraph(graph, data):
@@ -60,5 +64,5 @@ test = readJSON("data/")
 test = preprocessData(test)
 test = defineCommunity(test)
 
-for index, row in test.iterrows():
-    print(row['id'])
+citation_graph = initGraph(test)
+citation_graph = addEdgesGraph(citation_graph, test)
