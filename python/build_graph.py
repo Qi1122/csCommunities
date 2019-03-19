@@ -108,11 +108,11 @@ def createGraph(data, type):
     @param type String: Either 'directed' or 'undirected'
     '''
     if type == 'directed':
-        graph = initGraph(data, 'directed')
+        graph = initGraph(data, type)
         graph = addEdgesDirected(graph, data)
         graph = generateGraphPos(graph)
     else:
-        graph = initGraph(data, 'undirected')
+        graph = initGraph(data, type)
         graph = addEdgesUndirected(graph, data)
         graph = generateGraphPos(graph)
     return graph
