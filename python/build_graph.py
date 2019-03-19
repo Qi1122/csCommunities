@@ -72,12 +72,28 @@ def addEdgesUndirected(graph, data):
             graph.add_edge(id, ref)
     return graph
 
-citation_data = readJSON("data/")
-citation_data = preprocessData(citation_data)
-citation_data = defineCommunity(citation_data)
+def prepareData(path):
+    ''' Function to prepare the data
+    @param path string: Specifies the directory to search for JSON files
+    '''
+    citation_data = readJSON(path)
+    citation_data = preprocessData(citation_data)
+    citation_data = defineCommunity(citation_data)
+    return citation_data
 
-graph_directed = initGraph(citation_data)
-graph_directed = addEdgesDirected(graph_directed, citation_data)
+def createGraph(data, type):
+    ''' Function to create a specified graph
+    @param data DataFrame: Data frame containing citation information
+    @param type string: Either 'directed' or 'undirected'
+    '''
+    if type == 'directed':
+        graph = initGraph(data)
+        graph = addEdgesDirected(graph, data)
+    else:
+        graph = initGraph(data)
+        graph = addEdgesUndirected(graph, data)
+    return graph
 
-graph_undirected = initGraph(citation_data)
-graph_undirected = addEdgesDirected(graph_undirected, citation_data)
+citation_data = prepareData('data/')
+graph_directed = createGraph(citation_data, 'directed')
+graph_undirected = createGraph(citation_data, 'undirected')
