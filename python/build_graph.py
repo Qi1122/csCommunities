@@ -18,6 +18,7 @@ def readJSON(path):
 
 def defineCommunity(data):
     ''' Defines different computer science research communities by venue
+    @param data DataFrame: Data frame containing citation information
     '''
     communities = pd.read_csv("communities.csv")
     venues = communities.venue
@@ -47,22 +48,36 @@ def initGraph(data):
     nx.set_node_attributes(G, venue_dict, 'venue')
     return G
 
-def addEdges(graph, data):
-    ''' Adds edges between different nodes
+def addEdgesDirected(graph, data):
+    ''' Adds directed edges between different nodes
     @param graph Graph: Graph containing nodes from initGraph()
     @param data DataFrame: Data frame containing citation information
     '''
     for index, row in data.iterrows():
         id = row['id']
         refs = row['references']
-        # if not there or NaN, then add no edges, else
         for ref in refs:
-            graph.add_weighted_edges_from([(id, ref, 1)]) # may change on defref
+            graph.add_weighted_edges_from([(id, ref, 1)])
     return graph
 
-test = readJSON("data/")
-test = preprocessData(test)
-test = defineCommunity(test)
+def addEdgesUndirected(graph, data):
+    ''' Adds undirected edges between different nodes
+    @param graph Graph: Graph containing nodes from initGraph()
+    @param data DataFrame: Data frame containing citation information
+    '''
+    for index, row in data.iterrows():
+        id = row['id']
+        refs = row['references']
+        for ref in refs:
+            graph.add_edge(id, ref)
+    return graph
 
-citation_graph = initGraph(test)
-citation_graph = addEdges(citation_graph, test)
+citation_data = readJSON("data/")
+citation_data = preprocessData(citation_data)
+citation_data = defineCommunity(citation_data)
+
+graph_directed = initGraph(citation_data)
+graph_directed = addEdgesDirected(graph_directed, citation_data)
+
+graph_undirected = initGraph(citation_data)
+graph_undirected = addEdgesDirected(graph_undirected, citation_data)
