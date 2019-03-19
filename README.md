@@ -9,3 +9,6 @@ We use the citation network data from the DBLP network, which we accessed throug
 # Ignore data folder
 python/data/
 ```
+
+## graphs
+You can access archived versions of the graph in the `python/graphs/` folder.
