@@ -3,6 +3,7 @@ import pandas as pd
 import networkx as nx
 
 from os import listdir
+from networkx.readwrite import json_graph
 
 def readJSON(path):
     ''' Read and concatenate JSON files in a given directory
@@ -37,11 +38,15 @@ def preprocessData(data, years, min_citations):
     data = data.apply(lambda x: x.astype(str).str.lower())
     return data
 
-def initGraph(data):
+def initGraph(data, type):
     ''' Initialize a graph using the different paper ids
     @param data DataFrame: Data frame containing citation information
+    @param type String: Either 'directed' or 'undirected'
     '''
-    G = nx.DiGraph()
+    if type == 'directed':
+        G = nx.DiGraph()
+    else:
+        G = nx.Graph()
     for id in data['id']:
         G.add_node(id)
     community_dict = dict(zip(data.id,data.community))
@@ -76,16 +81,26 @@ def addEdgesUndirected(graph, data):
             graph.add_edge(id, ref)
     return graph
 
-def prepareData(path, years, min_cit):
+def prepareData(path, years, min_citations):
     ''' Function to prepare the data
     @param path String: Specifies the directory to search for JSON files
     @param years List: List containing the years to include
     @param min_citations Int: Integer containing the minimum number of citations
     '''
     citation_data = readJSON(path)
-    citation_data = preprocessData(citation_data, years)
+    citation_data = preprocessData(citation_data, years, min_citations)
     citation_data = defineCommunity(citation_data)
     return citation_data
+
+def generateGraphPos(graph):
+    ''' Function to generate graph layout
+    @param graph Graph: Graph containing nodes from initGraph()
+    '''
+    pos = nx.spring_layout(graph)
+    for n, p in pos.items():
+        graph.node[n]['x'] = p[0]
+        graph.node[n]['y'] = p[1]
+    return graph
 
 def createGraph(data, type):
     ''' Function to create a specified graph
@@ -93,12 +108,24 @@ def createGraph(data, type):
     @param type String: Either 'directed' or 'undirected'
     '''
     if type == 'directed':
-        graph = initGraph(data)
+        graph = initGraph(data, 'directed')
         graph = addEdgesDirected(graph, data)
+        graph = generateGraphPos(graph)
     else:
-        graph = initGraph(data)
+        graph = initGraph(data, 'undirected')
         graph = addEdgesUndirected(graph, data)
+        graph = generateGraphPos(graph)
     return graph
+
+def writeGraphJSON(graph, fileloc):
+    ''' Function to write graph to JSON format
+    @param graph Graph: A graph created from createGraph()
+    @param fileloc String: A string location of where to save the graphs
+    '''
+    json_data = json_graph.node_link_data(graph_undirected)
+    with open('data.json', 'w') as outfile:
+        json.dump(json_data, outfile)
+    return 'Wrote file'
 
 def writeGraph(graph, fileloc):
     ''' Function to save graphs
@@ -118,7 +145,7 @@ def loadGraph(fileloc):
     graph = archive['graph']
     return graph
 
-citation_data = prepareData('data/', ['2017', '2016', '2015', '2014', '2013'], 30)
+citation_data = prepareData('data/', ['2017', '2016', '2015', '2014', '2013'], 25)
 graph_directed = createGraph(citation_data, 'directed')
 graph_undirected = createGraph(citation_data, 'undirected')
 
