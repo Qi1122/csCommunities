@@ -64,10 +64,11 @@ def assignCommunity(data, paper_data):
     '''
     paper_data = paper_data[['id', 'venue']]
     paper_data.columns = ['id', 'reference_venue']
+    paper_data = paper_data.apply(lambda x: x.astype(str).str.lower())
     data = data.merge(paper_data, left_on = 'reference', right_on = 'id')
     communities = pd.read_csv('communities.csv')
-    communities.columns = ['reference_venue', 'reference_community']
-    data = data.merge(communities, left_on = 'reference_venue', right_on = 'reference_venue')
+    communities.columns = ['venue', 'reference_community']
+    data = data.merge(communities, left_on = 'reference_venue', right_on = 'venue')
     return data
 
 def prepareData(path, years):
