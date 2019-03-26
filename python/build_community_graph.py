@@ -66,8 +66,8 @@ def assignCommunity(data, paper_data):
     paper_data.columns = ['id', 'reference_venue']
     data = data.merge(paper_data, left_on = 'reference', right_on = 'id')
     communities = pd.read_csv('communities.csv')
-    communities.columns = ['venue', 'reference_community']
-    data = data.merge(communities, left_on = 'reference_venue', right_on = 'venue')
+    communities.columns = ['reference_venue', 'reference_community']
+    data = data.merge(communities, left_on = 'reference_venue', right_on = 'reference_venue')
     return data
 
 def prepareData(path, years):
@@ -85,4 +85,4 @@ def prepareData(path, years):
     citation_data = assignCommunity(citation_data, unclean_data)
     return citation_data
 
-citation_data = prepareData('data/', ['2017', '2016', '2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003'])
+citation_data = prepareData('data/', ['2018', '2017', '2016', '2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000', '1999', '1998'])
