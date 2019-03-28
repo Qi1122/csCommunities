@@ -52,18 +52,14 @@ def writeGraph(graph, fileloc):
         json.dump(json_data, outfile)
     return 'Wrote file'
 
-def loadGraph(fileloc):
-    ''' Function to load graph adjacency matrices
-    @param fileloc String: A string location of what to read. Assumes that the
-    graph is referenced as 'graph' in the .npz archive
+def generateGraph():
+    ''' Function that generates and saves the graphs
     '''
-    archive = np.load(fileloc)
-    graph = archive['graph']
-    return graph
-
-citation_data = prepareData('data/', ['2017', '2016', '2015', '2014', '2013'], 25)
-graph_directed = createGraph(citation_data, 'directed')
-graph_undirected = createGraph(citation_data, 'undirected')
-
-writeGraph(graph_undirected, 'graphs/undirected.npz')
-undirected = loadGraph('graphs/undirected.npz')
+    years = [2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000, 1999, 1998]
+    citation_data = readData('graphs/graph_data/grouped_data.csv')
+    for year in years:
+        graph = createGraph(citation_data, year)
+        graph = generateGraphPos(graph)
+        writeGraph(graph, 'graphs/' + str(year) + '_graph.json')
+        print('Wrote graph for ' + str(year))
+    return 'Wrote graphs'

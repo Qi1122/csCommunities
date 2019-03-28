@@ -13,3 +13,4 @@ cd python
 Rscript scraped_communities.R
 python fuzzy_community_match.py
 python process_data.py
+python build_graph.py
