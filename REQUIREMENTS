@@ -4,6 +4,7 @@ numpy
 networkx
 difflib
 ast
+json
 
 -- R
 readr

@@ -12,4 +12,4 @@ echo 'python/graphs/' >> /gitignore
 cd python
 Rscript scraped_communities.R
 python fuzzy_community_match.py
-python build_community_graph.py
+python process_data.py
