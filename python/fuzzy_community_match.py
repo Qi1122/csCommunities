@@ -23,12 +23,12 @@ data = data.apply(lambda x: x.astype(str).str.lower())
 
 venue, community = [], []
 for _, row in communities.iterrows():
-    community.append(row.community)
     closest_match = difflib.get_close_matches(row.venue, data.venue.unique(), 1, 0.8)
     if closest_match == []:
         print('no match for ' + row.venue)
     else:
         venue.append(closest_match[0])
+        community.append(row.community)
         print(row.venue + ' was matched with ' + closest_match[0])
 
 new_data = pd.DataFrame({

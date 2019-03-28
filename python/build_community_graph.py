@@ -69,6 +69,8 @@ def assignCommunity(data, paper_data):
     communities = pd.read_csv('communities.csv')
     communities.columns = ['venue', 'reference_community']
     data = data.merge(communities, left_on = 'reference_venue', right_on = 'venue')
+    data = data.drop(['id_y', 'venue_y'], axis = 1)
+    data.columns = ['paper_id', 'year', 'paper_venue', 'paper_community', 'reference_id', 'reference_venue', 'reference_community']
     return data
 
 def prepareData(path, years):
