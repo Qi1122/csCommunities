@@ -7,4 +7,4 @@ rm -rf *.zip
 cd ../..
 touch .gitignore
 echo 'python/data/' > .gitignore
-echo 'python/graphs/' > /gitignore
+echo 'python/graphs/' >> /gitignore
