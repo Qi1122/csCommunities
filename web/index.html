@@ -32,6 +32,12 @@
     document.getElementById('selectedCommunities').innerHTML = s.toString();
     console.log(s.toString());
   }
+  function printChangeYears(val) {
+    // Prints the value of selected items
+    s = $('#year_picker').val();
+    document.getElementById('selectedYears').innerHTML = s.toString();
+    console.log(s.toString());
+  }
   </script>
 </head>
 
@@ -59,9 +65,6 @@
   <div class="container-fluid">
 
     <div class="row">
-      <div class="col-8">
-        <h2>Chart</h2>
-      </div>
       <div class="col-4">
         <h2>Communities</h2>
         <select class="selectpicker" multiple data-actions-box="true" id="community_picker" title="Choose communities" onChange=printChangeCommunity(this.value)>
@@ -104,25 +107,35 @@
             <option value="2010">2010</option>
           </optgroup>
           <optgroup label="2000s">
-            <option value="2000">2000</option>
-            <option value="2001">2001</option>
-            <option value="2002">2002</option>
-            <option value="2003">2003</option>
-            <option value="2004">2004</option>
-            <option value="2005">2005</option>
-            <option value="2006">2006</option>
-            <option value="2007">2007</option>
-            <option value="2008">2008</option>
             <option value="2009">2009</option>
+            <option value="2008">2008</option>
+            <option value="2007">2007</option>
+            <option value="2006">2006</option>
+            <option value="2005">2005</option>
+            <option value="2004">2004</option>
+            <option value="2003">2003</option>
+            <option value="2002">2002</option>
+            <option value="2001">2001</option>
+            <option value="2000">2000</option>
           </optgroup>
         </select>
 
         <br>
         <br>
+
         <h6>Selected Communities</h6>
-        <div id="selectedCommunities"></div>
+        <div id="selectedCommunities"  class="col-6"></div>
+
+        <br>
+
+        <h6>Selected Years</h6>
+        <div id="selectedYears" class="col-6"></div>
 
       </div>
+      <div class="col-8">
+        <h2>Chart</h2>
+      </div>
+
     </div>
   </div>
 </body>
