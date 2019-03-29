@@ -26,22 +26,6 @@
 
   <!-- d3 -->
   <script src="https://d3js.org/d3.v5.min.js"></script>
-
-  <!-- custom js -->
-  <script>
-  function printChangeCommunity(val) {
-    // Prints the value of selected items in community picker select
-    s = $('#community_picker').val();
-    document.getElementById('selectedCommunities').innerHTML = s.toString();
-    console.log(s.toString());
-  }
-  function printChangeYears(val) {
-    // Prints the value of selected items in year picker select
-    s = $('#year_picker').val();
-    document.getElementById('selectedYears').innerHTML = s.toString();
-    console.log(s.toString());
-  }
-  </script>
 </head>
 
 <body>
@@ -142,23 +126,39 @@
         </div>
 
       </div>
-      <div class="col-8" id="chartDiv">
-        <h2>Chart</h2>
-        <div id="chartArea">
-        </div>
+      <div class="col-8" id="chartDiv" style="height: 100%;">
       </div>
 
     </div>
   </div>
 
+  <!-- custom js -->
   <script>
-  console.log('Test for width getter');
-  chart_width = $(window).width() * 0.75;
-  chart_height = $(window).height() * 0.5;
+  communityStore = [];
+  yearStore = [];
+  function printChangeCommunity(val) {
+    // Prints the value of selected items in community picker select
+    s = $('#community_picker').val();
+    document.getElementById('selectedCommunities').innerHTML = s.toString();
+    communityStore = s;
+    console.log(s.toString());
+  }
+  function printChangeYears(val) {
+    // Prints the value of selected items in year picker select
+    s = $('#year_picker').val();
+    document.getElementById('selectedYears').innerHTML = s.toString();
+    yearStore = s;
+    console.log(s.toString());
+  }
+  </script>
+
+  <script>
+  chart_width = $("#chartDiv").width();
+  chart_height = $(window).height() * 0.8;
   console.log(chart_width.toString());
   console.log(chart_height.toString());
-  
-  var svg = d3.select("#graphArea").append("svg").attr("width", chart_width).attr("height", chart_height);
+
+  var svg = d3.select("#chartDiv").append("svg").attr("width", chart_width).attr("height", chart_height);
   svg.append("rect").attr("width", "100%").attr("height", "100%").attr("fill", "pink");
   </script>
 </body>
