@@ -24,6 +24,15 @@
   <script src="js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.7/dist/js/bootstrap-select.min.js"></script>
 
+  <script>
+  console.log('Test for community picker');
+  function printChange(val) {
+    // Prints the value of selected items
+    s = $('#community_picker').val();
+    document.getElementById('selectedCommunities').innerHTML = s.toString();
+    console.log(s.toString());
+  }
+  </script>
 </head>
 
 <body>
@@ -55,35 +64,39 @@
       </div>
       <div class="col-4">
         <h2>Communities</h2>
-        <select class="selectpicker" multiple data-actions-box="true">
+        <select class="selectpicker" multiple data-actions-box="true" id="community_picker" onChange=printChange(this.value)>
           <optgroup label="Machine Learning">
-            <option>Artificial Intelligence</option>
-            <option>Computational Linguistics</option>
-            <option data-thumbnail="icons/a.png">Computer Vision and Pattern Recognition</option>
-            <option>Data Mining and Analysis</option>
+            <option value="a">Artificial Intelligence</option>
+            <option value="b">Computational Linguistics</option>
+            <option value="c" data-thumbnail="icons/a.png">Computer Vision and Pattern Recognition</option>
+            <option value="d">Data Mining and Analysis</option>
           </optgroup>
           <optgroup label="Systems">
-            <option>Databases and Information Systems</option>
-            <option>Computer Systems</option>
-            <option>Software Systems</option>
+            <option value="e">Databases and Information Systems</option>
+            <option value="f">Computer Systems</option>
+            <option value="g">Software Systems</option>
           </optgroup>
           <optgroup label="Theory and Algorithms">
-            <option>Computer Security and Cryptography</option>
-            <option>Signal Processing</option>
-            <option>Theoretical Computer Science</option>
+            <option value="h">Computer Security and Cryptography</option>
+            <option value="i">Signal Processing</option>
+            <option value="j">Theoretical Computer Science</option>
           </optgroup>
           <optgroup label="Biology and Medicine">
-            <option value="bioinformatics">Bioinformatics and Computational Biology</option>
-            <option value="medinformatics">Medical Informatics</option>
+            <option value="l">Bioinformatics and Computational Biology</option>
+            <option value="m">Medical Informatics</option>
           </optgroup>
           <optgroup label="Other">
-            <option>Human Computer Interaction</option>
-            <option>Multimedia</option>
-            <option>Computer Networks and Wireless Communication</option>
-            <option>Robotics</option>
+            <option value="n">Human Computer Interaction</option>
+            <option value="o">Multimedia</option>
+            <option value="p">Computer Networks and Wireless Communication</option>
+            <option value="q">Robotics</option>
           </optgroup>
         </select>
 
+        <br>
+        <br>
+        <h6>Selected Communities</h6>
+        <div id="selectedCommunities"></div>
 
       </div>
     </div>
