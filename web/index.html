@@ -45,18 +45,46 @@
   </div>
   </nav>
 
+  <br>
+
   <div class="container-fluid">
+
     <div class="row">
       <div class="col-8">
         <h2>Chart</h2>
       </div>
       <div class="col-4">
         <h2>Communities</h2>
-        <select class="selectpicker">
-          <option>Mustard</option>
-          <option>Ketchup</option>
-          <option>Barbecue</option>
+        <select class="selectpicker" multiple data-actions-box="true">
+          <optgroup label="Machine Learning">
+            <option>Artificial Intelligence</option>
+            <option>Computational Linguistics</option>
+            <option data-thumbnail="icons/a.png">Computer Vision and Pattern Recognition</option>
+            <option>Data Mining and Analysis</option>
+          </optgroup>
+          <optgroup label="Systems">
+            <option>Databases and Information Systems</option>
+            <option>Computer Systems</option>
+            <option>Software Systems</option>
+          </optgroup>
+          <optgroup label="Theory and Algorithms">
+            <option>Computer Security and Cryptography</option>
+            <option>Signal Processing</option>
+            <option>Theoretical Computer Science</option>
+          </optgroup>
+          <optgroup label="Biology and Medicine">
+            <option value="bioinformatics">Bioinformatics and Computational Biology</option>
+            <option value="medinformatics">Medical Informatics</option>
+          </optgroup>
+          <optgroup label="Other">
+            <option>Human Computer Interaction</option>
+            <option>Multimedia</option>
+            <option>Computer Networks and Wireless Communication</option>
+            <option>Robotics</option>
+          </optgroup>
         </select>
+
+
       </div>
     </div>
   </div>
