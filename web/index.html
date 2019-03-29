@@ -56,30 +56,31 @@
         <h2>Communities</h2>
         <select class="selectpicker" multiple data-actions-box="true" id="community_picker" title="Choose communities" onChange=printChangeCommunity(this.value)>
           <optgroup label="Machine Learning">
-            <option value="a">Artificial Intelligence</option>
-            <option value="b">Computational Linguistics</option>
-            <option value="c" data-thumbnail="icons/a.png">Computer Vision and Pattern Recognition</option>
-            <option value="d">Data Mining and Analysis</option>
+            <option value="a" data-content="<img src='icons/ai.png' height='24px' width='24px'> Artificial Intelligence">Artificial Intelligence</option>
+            <option value="b" data-content="<img src='icons/linguistics.png' height='24px' width='24px'> Computational Linguistics">Computational Linguistics</option>
+            <option value="c" data-content="<img src='icons/computer_vision.png' height='24px' width='24px'> Computer Vision and Pattern Recognition">Computer Vision and Pattern Recognition</option>
+            <option value="d" data-content="<img src='icons/data_mining.png' height='24px' width='24px'> Data Mining and Analysis">Data Mining and Analysis</option>
           </optgroup>
-          <optgroup label="Systems">
-            <option value="e">Databases and Information Systems</option>
-            <option value="f">Computer Systems</option>
-            <option value="g">Software Systems</option>
+          <optgroup label="Systems and Networks">
+            <option value="e" data-content="<img src='icons/databases.png' height='24px' width='24px'> Databases and Information Systems">Databases and Information Systems</option>
+            <option value="f" data-content="<img src='icons/computer_systems.png' height='24px' width='24px'> Computer Systems">Computer Systems</option>
+            <option value="g" data-content="<img src='icons/software_systems.png' height='24px' width='24px'> Software Systems">Software Systems</option>
+            <option value="p" data-content="<img src='icons/network.png' height='24px' width='24px'> Computer Networks and Wireless Communication">Computer Networks and Wireless Communication</option>
           </optgroup>
           <optgroup label="Theory and Algorithms">
-            <option value="h">Computer Security and Cryptography</option>
-            <option value="i">Signal Processing</option>
-            <option value="j">Theoretical Computer Science</option>
+            <option value="h" data-content="<img src='icons/security.png' height='24px' width='24px'> Computer Security and Cryptography">Computer Security and Cryptography</option>
+            <option value="i" data-content="<img src='icons/signal.png' height='24px' width='24px'> Signal Processing">Signal Processing</option>
+            <option value="j" data-content="<img src='icons/theory.png' height='24px' width='24px'> Theoretical Computer Science">Theoretical Computer Science</option>
+          </optgroup>
+          <optgroup label="Visualization and Interaction">
+            <option value="n" data-content="<img src='icons/computer.png' height='24px' width='24px'> Human Computer Interaction">Human Computer Interaction</option>
+            <option value="o" data-content="<img src='icons/multimedia.png' height='24px' width='24px'> Multimedia">Multimedia</option>
+            <option value="q" data-content="<img src='icons/graphics.png' height='24px' width='24px'> Computer Graphics">Computer Graphics</option>
+            <option value="q" data-content="<img src='icons/robotics.png' height='24px' width='24px'> Robotics">Robotics</option>
           </optgroup>
           <optgroup label="Biology and Medicine">
-            <option value="l">Bioinformatics and Computational Biology</option>
-            <option value="m">Medical Informatics</option>
-          </optgroup>
-          <optgroup label="Other">
-            <option value="n">Human Computer Interaction</option>
-            <option value="o">Multimedia</option>
-            <option value="p">Computer Networks and Wireless Communication</option>
-            <option value="q">Robotics</option>
+            <option value="l" data-content="<img src='icons/bioinformatics.png' height='24px' width='24px'> Bioinformatics and Computational Biology">Bioinformatics and Computational Biology</option>
+            <option value="m" data-content="<img src='icons/medical.png' height='24px' width='24px'> Medical Informatics">Medical Informatics</option>
           </optgroup>
         </select>
         <select class="selectpicker" multiple data-actions-box="true" id="year_picker" title="Choose years" onChange=printChangeYears(this.value)>
@@ -104,6 +105,18 @@
             <option value="2002">2002</option>
             <option value="2001">2001</option>
             <option value="2000">2000</option>
+          </optgroup>
+          <optgroup label="1990s">
+            <option value="1999">1999</option>
+            <option value="1998">1998</option>
+            <option value="1997">1997</option>
+            <option value="1996">1996</option>
+            <option value="1995">1995</option>
+            <option value="1994">1994</option>
+            <option value="1993">1993</option>
+            <option value="1992">1992</option>
+            <option value="1991">1991</option>
+            <option value="1990">1990</option>
           </optgroup>
         </select>
 
