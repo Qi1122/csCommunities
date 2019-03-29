@@ -24,16 +24,19 @@
   <script src="js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.7/dist/js/bootstrap-select.min.js"></script>
 
+  <!-- d3 -->
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+
+  <!-- custom js -->
   <script>
-  console.log('Test for community picker');
   function printChangeCommunity(val) {
-    // Prints the value of selected items
+    // Prints the value of selected items in community picker select
     s = $('#community_picker').val();
     document.getElementById('selectedCommunities').innerHTML = s.toString();
     console.log(s.toString());
   }
   function printChangeYears(val) {
-    // Prints the value of selected items
+    // Prints the value of selected items in year picker select
     s = $('#year_picker').val();
     document.getElementById('selectedYears').innerHTML = s.toString();
     console.log(s.toString());
@@ -65,7 +68,7 @@
   <div class="container-fluid">
 
     <div class="row">
-      <div class="col-4">
+      <div class="col-4" id="optionDiv">
         <h2>Communities</h2>
         <select class="selectpicker" multiple data-actions-box="true" id="community_picker" title="Choose communities" onChange=printChangeCommunity(this.value)>
           <optgroup label="Machine Learning">
@@ -124,20 +127,40 @@
         <br>
 
         <h6>Selected Communities</h6>
-        <div id="selectedCommunities"  class="col-6"></div>
+        <div id="selectedCommunities" style="word-break: break-all">None</div>
 
         <br>
 
         <h6>Selected Years</h6>
-        <div id="selectedYears" class="col-6"></div>
+        <div id="selectedYears" style="word-break: break-all">None</div>
+
+        <br>
+
+        <h6>Community Color Legend</h6>
+        <div id="container" style="word-break: break-all">
+          None
+        </div>
 
       </div>
-      <div class="col-8">
+      <div class="col-8" id="chartDiv">
         <h2>Chart</h2>
+        <div id="chartArea">
+        </div>
       </div>
 
     </div>
   </div>
+
+  <script>
+  console.log('Test for width getter');
+  chart_width = $(window).width() * 0.75;
+  chart_height = $(window).height() * 0.5;
+  console.log(chart_width.toString());
+  console.log(chart_height.toString());
+  
+  var svg = d3.select("#graphArea").append("svg").attr("width", chart_width).attr("height", chart_height);
+  svg.append("rect").attr("width", "100%").attr("height", "100%").attr("fill", "pink");
+  </script>
 </body>
 
 </html>
