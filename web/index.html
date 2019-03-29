@@ -26,7 +26,7 @@
 
   <script>
   console.log('Test for community picker');
-  function printChange(val) {
+  function printChangeCommunity(val) {
     // Prints the value of selected items
     s = $('#community_picker').val();
     document.getElementById('selectedCommunities').innerHTML = s.toString();
@@ -64,7 +64,7 @@
       </div>
       <div class="col-4">
         <h2>Communities</h2>
-        <select class="selectpicker" multiple data-actions-box="true" id="community_picker" onChange=printChange(this.value)>
+        <select class="selectpicker" multiple data-actions-box="true" id="community_picker" title="Choose communities" onChange=printChangeCommunity(this.value)>
           <optgroup label="Machine Learning">
             <option value="a">Artificial Intelligence</option>
             <option value="b">Computational Linguistics</option>
@@ -90,6 +90,30 @@
             <option value="o">Multimedia</option>
             <option value="p">Computer Networks and Wireless Communication</option>
             <option value="q">Robotics</option>
+          </optgroup>
+        </select>
+        <select class="selectpicker" multiple data-actions-box="true" id="year_picker" title="Choose years" onChange=printChangeYears(this.value)>
+          <optgroup label="2010s">
+            <option value="2017">2017</option>
+            <option value="2016">2016</option>
+            <option value="2015">2015</option>
+            <option value="2014">2014</option>
+            <option value="2013">2013</option>
+            <option value="2012">2012</option>
+            <option value="2011">2011</option>
+            <option value="2010">2010</option>
+          </optgroup>
+          <optgroup label="2000s">
+            <option value="2000">2000</option>
+            <option value="2001">2001</option>
+            <option value="2002">2002</option>
+            <option value="2003">2003</option>
+            <option value="2004">2004</option>
+            <option value="2005">2005</option>
+            <option value="2006">2006</option>
+            <option value="2007">2007</option>
+            <option value="2008">2008</option>
+            <option value="2009">2009</option>
           </optgroup>
         </select>
 
