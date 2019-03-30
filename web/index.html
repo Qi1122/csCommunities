@@ -26,6 +26,9 @@
 
   <!-- d3 -->
   <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="https://d3js.org/d3-color.v1.min.js"></script>
+  <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 </head>
 
 <body>
@@ -53,35 +56,35 @@
 
     <div class="row">
       <div class="col-4" id="optionDiv">
-        <h2>Communities</h2>
+        <h2>Options</h2>
         <select class="selectpicker" multiple data-actions-box="true" id="community_picker" title="Choose communities" onChange=printChangeCommunity(this.value)>
           <optgroup label="Machine Learning">
-            <option value="a" data-content="<img src='icons/ai.png' height='24px' width='24px'> Artificial Intelligence">Artificial Intelligence</option>
-            <option value="b" data-content="<img src='icons/linguistics.png' height='24px' width='24px'> Computational Linguistics">Computational Linguistics</option>
-            <option value="c" data-content="<img src='icons/computer_vision.png' height='24px' width='24px'> Computer Vision and Pattern Recognition">Computer Vision and Pattern Recognition</option>
-            <option value="d" data-content="<img src='icons/data_mining.png' height='24px' width='24px'> Data Mining and Analysis">Data Mining and Analysis</option>
+            <option value="ai" data-content="<img src='icons/ai.png' height='24px' width='24px'> Artificial Intelligence">Artificial Intelligence</option>
+            <option value="computational linguistics" data-content="<img src='icons/linguistics.png' height='24px' width='24px'> Computational Linguistics">Computational Linguistics</option>
+            <option value="computer vision" data-content="<img src='icons/computer_vision.png' height='24px' width='24px'> Computer Vision and Pattern Recognition">Computer Vision and Pattern Recognition</option>
+            <option value="data mining" data-content="<img src='icons/data_mining.png' height='24px' width='24px'> Data Mining and Analysis">Data Mining and Analysis</option>
           </optgroup>
           <optgroup label="Systems and Networks">
-            <option value="e" data-content="<img src='icons/databases.png' height='24px' width='24px'> Databases and Information Systems">Databases and Information Systems</option>
-            <option value="f" data-content="<img src='icons/computer_systems.png' height='24px' width='24px'> Computer Systems">Computer Systems</option>
-            <option value="g" data-content="<img src='icons/software_systems.png' height='24px' width='24px'> Software Systems">Software Systems</option>
-            <option value="p" data-content="<img src='icons/network.png' height='24px' width='24px'> Computer Networks and Wireless Communication">Computer Networks and Wireless Communication</option>
+            <option value="databases" data-content="<img src='icons/databases.png' height='24px' width='24px'> Databases and Information Systems">Databases and Information Systems</option>
+            <option value="systems" data-content="<img src='icons/computer_systems.png' height='24px' width='24px'> Computer Systems">Computer Systems</option>
+            <option value="software systems" data-content="<img src='icons/software_systems.png' height='24px' width='24px'> Software Systems">Software Systems</option>
+            <option value="networks" data-content="<img src='icons/network.png' height='24px' width='24px'> Computer Networks and Wireless Communication">Computer Networks and Wireless Communication</option>
           </optgroup>
           <optgroup label="Theory and Algorithms">
-            <option value="h" data-content="<img src='icons/security.png' height='24px' width='24px'> Computer Security and Cryptography">Computer Security and Cryptography</option>
-            <option value="i" data-content="<img src='icons/signal.png' height='24px' width='24px'> Signal Processing">Signal Processing</option>
-            <option value="i" data-content="<img src='icons/information.png' height='24px' width='24px'> Information Theory">Information Theory</option>
-            <option value="j" data-content="<img src='icons/theory.png' height='24px' width='24px'> Theoretical Computer Science">Theoretical Computer Science</option>
+            <option value="security" data-content="<img src='icons/security.png' height='24px' width='24px'> Computer Security and Cryptography">Computer Security and Cryptography</option>
+            <option value="signal processing" data-content="<img src='icons/signal.png' height='24px' width='24px'> Signal Processing">Signal Processing</option>
+            <option value="information theory" data-content="<img src='icons/information.png' height='24px' width='24px'> Information Theory">Information Theory</option>
+            <option value="theory" data-content="<img src='icons/theory.png' height='24px' width='24px'> Theoretical Computer Science">Theoretical Computer Science</option>
           </optgroup>
           <optgroup label="Visualization and Interaction">
-            <option value="n" data-content="<img src='icons/computer.png' height='24px' width='24px'> Human Computer Interaction">Human Computer Interaction</option>
-            <option value="o" data-content="<img src='icons/multimedia.png' height='24px' width='24px'> Multimedia">Multimedia</option>
-            <option value="q" data-content="<img src='icons/graphics.png' height='24px' width='24px'> Computer Graphics">Computer Graphics</option>
-            <option value="q" data-content="<img src='icons/robotics.png' height='24px' width='24px'> Robotics">Robotics</option>
+            <option value="hci" data-content="<img src='icons/computer.png' height='24px' width='24px'> Human Computer Interaction">Human Computer Interaction</option>
+            <option value="multimedia" data-content="<img src='icons/multimedia.png' height='24px' width='24px'> Multimedia">Multimedia</option>
+            <option value="graphics" data-content="<img src='icons/graphics.png' height='24px' width='24px'> Computer Graphics">Computer Graphics</option>
+            <option value="robotics" data-content="<img src='icons/robotics.png' height='24px' width='24px'> Robotics">Robotics</option>
           </optgroup>
           <optgroup label="Biology and Medicine">
-            <option value="l" data-content="<img src='icons/bioinformatics.png' height='24px' width='24px'> Bioinformatics and Computational Biology">Bioinformatics and Computational Biology</option>
-            <option value="m" data-content="<img src='icons/medical.png' height='24px' width='24px'> Medical Informatics">Medical Informatics</option>
+            <option value="bioinformatics" data-content="<img src='icons/bioinformatics.png' height='24px' width='24px'> Bioinformatics and Computational Biology">Bioinformatics and Computational Biology</option>
+            <option value="medical informatics" data-content="<img src='icons/medical.png' height='24px' width='24px'> Medical Informatics">Medical Informatics</option>
           </optgroup>
         </select>
         <select class="selectpicker" multiple data-actions-box="true" id="year_picker" title="Choose years" onChange=printChangeYears(this.value)>
@@ -155,25 +158,31 @@
     s = $('#community_picker').val();
     document.getElementById('selectedCommunities').innerHTML = s.toString();
     communityStore = s;
-    console.log(s.toString());
   }
   function printChangeYears(val) {
     // Prints the value of selected items in year picker select
     s = $('#year_picker').val();
     document.getElementById('selectedYears').innerHTML = s.toString();
     yearStore = s;
-    console.log(s.toString());
   }
   </script>
 
   <script>
-  chart_width = $("#chartDiv").width();
-  chart_height = $(window).height() * 0.8;
-  console.log(chart_width.toString());
-  console.log(chart_height.toString());
+  var chart_width = $("#chartDiv").width();
+  var chart_height = $(window).height() * 0.8;
 
   var svg = d3.select("#chartDiv").append("svg").attr("width", chart_width).attr("height", chart_height);
   svg.append("rect").attr("width", "100%").attr("height", "100%").attr("fill", "pink");
+
+  var jsonCircles = [
+  { "x_axis": 30, "y_axis": 30, "radius": 20, "color" : "green" },
+  { "x_axis": 70, "y_axis": 70, "radius": 20, "color" : "purple"},
+  { "x_axis": 110, "y_axis": 100, "radius": 20, "color" : "red"}];
+
+  svg.append("circle").attr("cx",30).attr("cy", 30).attr("r", 20);
+
+  var accent = d3.scaleOrdinal(d3.schemePaired);
+  console.log(accent.toString());
   </script>
 </body>
 
