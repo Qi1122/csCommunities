@@ -1,0 +1,11 @@
+-- PYTHON
+pandas
+numpy
+networkx
+difflib
+ast
+json
+
+-- R
+readr
+rvest
