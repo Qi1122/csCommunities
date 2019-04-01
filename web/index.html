@@ -273,6 +273,11 @@
               .attr("width", width)
               .attr("height", height);
 
+              d3.csv("data/citations.csv")
+              .then(function(data) {
+                console.log(data);
+              });
+
   var radius = 5;
 
 var nodes_data =  [
