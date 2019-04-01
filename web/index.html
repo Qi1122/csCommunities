@@ -68,7 +68,6 @@
 
     <div class="row">
       <div class="col-4" id="optionDiv">
-        <h2>Options</h2>
         <select class="selectpicker" multiple data-actions-box="true" id="community_picker" title="Choose communities" onChange=changeCommunity(this.value)>
           <optgroup label="Machine Learning">
             <option value="ai" data-content="<img src='icons/ai.png' height='24px' width='24px'> Artificial Intelligence">Artificial Intelligence</option>
@@ -139,23 +138,94 @@
         <br>
         <br>
 
-        <h6>Selected Communities</h6>
+        <h5>Selected Communities</h5>
         <div id="selectedCommunities" style="word-break: break-all">None</div>
 
         <br>
 
-        <h6>Selected Years</h6>
+        <h5>Selected Years</h5>
         <div id="selectedYears" style="word-break: break-all">None</div>
 
         <br>
 
-        <h6>Community Color Legend</h6>
+        <h5>Community Color Legend</h5>
         <div id="communityColors" style="word-break: break-all">
-          None
+          <h6>Machine Learning</h6>
+          <svg width="12px" height="12px">
+            <rect width="12px" height="12px" fill="#800000" />
+          </svg> Artificial Intelligence
+          <br >
+          <svg width="12px" height="12px">
+            <rect width="12px" height="12px" fill="#9A6324" />
+          </svg> Computational Linguistics
+          <br >
+          <svg width="12px" height="12px">
+            <rect width="12px" height="12px" fill="#808000" />
+          </svg> Computer Vision
+          <br>
+          <svg width="12px" height="12px">
+            <rect width="12px" height="12px" fill="#469990" />
+          </svg> Data Mining
+          <h6>Systems and Networks</h6>
+          <svg width="12px" height="12px">
+            <rect width="12px" height="12px" fill="#000075" />
+          </svg> Databases
+          <br>
+          <svg width="12px" height="12px">
+            <rect width="12px" height="12px" fill="#E6194B" />
+          </svg> Computer Systems
+          <br>
+          <svg width="12px" height="12px">
+            <rect width="12px" height="12px" fill="#F58231" />
+          </svg> Software Systems
+          <br>
+          <svg width="12px" height="12px">
+            <rect width="12px" height="12px" fill="#BFEF45" />
+          </svg> Computer Networks
+          <h6>Theory and Algorithms</h6>
+          <svg width="12px" height="12px">
+            <rect width="12px" height="12px" fill="#3CB44B" />
+          </svg> Computer Security/Cryptography
+          <br>
+          <svg width="12px" height="12px">
+            <rect width="12px" height="12px" fill="#42D4F4" />
+          </svg> Signal Processing
+          <br>
+          <svg width="12px" height="12px">
+            <rect width="12px" height="12px" fill="#4363D8" />
+          </svg> Information Theory
+          <br>
+          <svg width="12px" height="12px">
+            <rect width="12px" height="12px" fill="#911EB4" />
+          </svg> Theory
+          <h6>Visualization and Interaction</h6>
+          <svg width="12px" height="12px">
+            <rect width="12px" height="12px" fill="#F032E6" />
+          </svg> Human Computer Interaction
+          <br>
+          <svg width="12px" height="12px">
+            <rect width="12px" height="12px" fill="#A9A9A9" />
+          </svg> Multimedia
+          <br>
+          <svg width="12px" height="12px">
+            <rect width="12px" height="12px" fill="#FABEBE" />
+          </svg> Computer Graphics
+          <br>
+          <svg width="12px" height="12px">
+            <rect width="12px" height="12px" fill="#FFD8B1" />
+          </svg> Robotics
+          <h6>Biology and Medicine</h6>
+          <svg width="12px" height="12px">
+            <rect width="12px" height="12px" fill="#AAFFC8" />
+          </svg> Bioinformatics/Computational Biology
+          <br>
+          <svg width="12px" height="12px">
+            <rect width="12px" height="12px" fill="#E6BEFF" />
+          </svg> Medical Informatics
         </div>
 
       </div>
-      <div class="col-8" id="chartDiv" style="height: 100%;">
+      <div class="col-8" id="chartDiv" style="height: 100%; border: 1px solid black;">
       </div>
 
     </div>
@@ -170,7 +240,7 @@
 "networks", "security", "signal processing", "information theory", "theory",
 "hci", "multimedia", "graphics", "robotics", "bioinformatics", "medical informatics"]).range(["800000",
 "9A6324", "808000", "469990", "000075", "E6194B", "F58231", "BFEF45", "3CB44B",
-"42D4F4", "4363D8", "911EB4", "F032E6", "A9A9A9", "FABEBE", "FFD8B1", "FFFAC8",
+"42D4F4", "4363D8", "911EB4", "F032E6", "A9A9A9", "FABEBE", "FFD8B1",
 "AAFFC3", "E6BEFF"]);
 
   function changeLegend(val) {
@@ -198,9 +268,12 @@
   var width = $("#chartDiv").width();
   var height = $(window).height() * 0.8;
 
-  var svg = d3.select("#chartDiv").append("svg").attr("width", width).attr("height", height);
+  var svg = d3.select("#chartDiv")
+              .append("svg")
+              .attr("width", width)
+              .attr("height", height);
 
-  var radius = 15;
+  var radius = 5;
 
 var nodes_data =  [
     {"name": "Lillian", "sex": "F"},
@@ -295,8 +368,7 @@ var center_force = d3.forceCenter(width / 2, height / 2);
 simulation
     .force("charge_force", charge_force)
     .force("center_force", center_force)
-    .force("links",link_force)
- ;
+    .force("links",link_force);
 
 
 //add tick instructions:
@@ -325,7 +397,9 @@ var node = g.append("g")
         .attr("r", radius)
         .attr("fill", circleColour);
 
-
+var label = node.append("text")
+                .attr("dy", ".35em")
+                .text(function(d) { return d.name; });
 //add drag capabilities
 var drag_handler = d3.drag()
 	.on("start", drag_start)
