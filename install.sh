@@ -1,6 +1,9 @@
 cd python
 mkdir data
 mkdir graphs
+cd graphs
+mkdir graph_data
+cd ..
 cd data
 wget https://lfs.aminer.cn/lab-datasets/citation/dblp.v10.zip || curl -O https://lfs.aminer.cn/lab-datasets/citation/dblp.v10.zip
 unzip *.zip
