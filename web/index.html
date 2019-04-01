@@ -57,7 +57,7 @@
     <div class="row">
       <div class="col-4" id="optionDiv">
         <h2>Options</h2>
-        <select class="selectpicker" multiple data-max-options="12" data-actions-box="true" id="community_picker" title="Choose communities" onChange=printChangeCommunity(this.value)>
+        <select class="selectpicker" multiple data-actions-box="true" id="community_picker" title="Choose communities" onChange=changeCommunity(this.value)>
           <optgroup label="Machine Learning">
             <option value="ai" data-content="<img src='icons/ai.png' height='24px' width='24px'> Artificial Intelligence">Artificial Intelligence</option>
             <option value="computational linguistics" data-content="<img src='icons/linguistics.png' height='24px' width='24px'> Computational Linguistics">Computational Linguistics</option>
@@ -87,7 +87,7 @@
             <option value="medical informatics" data-content="<img src='icons/medical.png' height='24px' width='24px'> Medical Informatics">Medical Informatics</option>
           </optgroup>
         </select>
-        <select class="selectpicker" multiple data-actions-box="true" id="year_picker" title="Choose years" onChange=printChangeYears(this.value)>
+        <select class="selectpicker" multiple data-actions-box="true" id="year_picker" title="Choose years" onChange=changeYears(this.value)>
           <optgroup label="2010s">
             <option value="2017">2017</option>
             <option value="2016">2016</option>
@@ -138,7 +138,7 @@
         <br>
 
         <h6>Community Color Legend</h6>
-        <div id="container" style="word-break: break-all">
+        <div id="communityColors" style="word-break: break-all">
           None
         </div>
 
@@ -151,20 +151,35 @@
 
   <!-- custom js -->
   <script>
+  console.log("welcome to cs research communities!");
+
+  var colors = d3.scaleOrdinal(["ai", "computational linguistics",
+  "computer vision", "data mining", "databases", "systems", "software systems",
+"networks", "security", "signal processing", "information theory", "theory",
+"hci", "multimedia", "graphics", "robotics", "bioinformatics", "medical informatics"]).range(["800000",
+"9A6324", "808000", "469990", "000075", "E6194B", "F58231", "BFEF45", "3CB44B",
+"42D4F4", "4363D8", "911EB4", "F032E6", "A9A9A9", "FABEBE", "FFD8B1", "FFFAC8",
+"AAFFC3", "E6BEFF"]);
+
+  function changeLegend(val) {
+    // Prints the legend
+  }
+
   communityStore = [];
   yearStore = [];
-  function printChangeCommunity(val) {
+  function changeCommunity(val) {
     // Prints the value of selected items in community picker select
     s = $('#community_picker').val();
     document.getElementById('selectedCommunities').innerHTML = s.toString();
     communityStore = s;
   }
-  function printChangeYears(val) {
+  function changeYears(val) {
     // Prints the value of selected items in year picker select
     s = $('#year_picker').val();
     document.getElementById('selectedYears').innerHTML = s.toString();
     yearStore = s;
   }
+
   </script>
 
   <script>
@@ -181,9 +196,7 @@
 
   svg.append("circle").attr("cx",30).attr("cy", 30).attr("r", 20);
 
-  var accent = d3.scaleOrdinal(d3.schemePaired);
-  console.log(accent.toString());
   </script>
-</body>
+""</body>
 
 </html>
