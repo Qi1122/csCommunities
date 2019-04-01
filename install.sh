@@ -1,7 +1,6 @@
 echo "---------- Making necessary directories ----------"
 cd python
 mkdir data
-mkdir graphs
 cd graphs
 mkdir graph_data
 cd ..
