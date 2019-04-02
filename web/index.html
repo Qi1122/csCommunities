@@ -40,14 +40,16 @@
     stroke: black	;
     stroke-width: 0px;
   }
+	
 </style>
 </head>
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="index.html">Visualizing Computer Science Research Communities</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
+		
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -226,6 +228,8 @@
 
       </div>
       <div class="col-8" id="chartDiv" style="height: 100%; border: 1px solid black;">
+				<button id = "detail_button">Detail</button>
+				<button id = "overall_button">Overall</button>
       </div>
 
     </div>
@@ -419,6 +423,16 @@ var zoom_handler = d3.zoom()
     .on("zoom", zoom_actions);
 
 zoom_handler(svg);
+
+d3.select('#detail_button').on('click', function () {
+  // Update code here
+  console.log("detailButton");
+});
+
+d3.select('#overall_button').on('click', function () {
+  // Update code here
+  console.log("overallButton");
+});
 
 /** Functions **/
 
