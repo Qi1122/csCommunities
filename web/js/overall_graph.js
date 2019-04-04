@@ -28,9 +28,9 @@ var svg = d3.select("#chartDiv").append("svg")
 svg.append("circle")
 .attr("r", outerRadius);
 
-d3.csv("data/neighs.csv")
+d3.csv("neighs.csv")
 .then(function (neighs) {
-d3.json("data/matrix.json")
+d3.json("matrix.json")
 .then(function (matrix) {
 
     // console.log(matrix.length);
