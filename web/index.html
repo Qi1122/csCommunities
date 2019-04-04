@@ -1,502 +1,798 @@
 <!doctype html>
 <html>
 
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="keywords" content="">
-  <meta name="author" content="">
-  <title>Visual Network Analysis of Computer Science Research Communities</title>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<meta name="author" content="">
+		<title>Visual Network Analysis of Computer Science Research Communities</title>
 
-  <!-- bootstrap css -->
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/bootstrap-grid.min.css">
+		<!-- bootstrap css -->
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/bootstrap-grid.min.css">
 
-  <!-- bootstrap-select -->
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.7/dist/css/bootstrap-select.min.css">
+		<!-- bootstrap-select -->
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.7/dist/css/bootstrap-select.min.css">
 
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="js/jquery-3.3.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.7/dist/js/bootstrap-select.min.js"></script>
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="js/jquery-3.3.1.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+		 crossorigin="anonymous"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.7/dist/js/bootstrap-select.min.js"></script>
 
-  <!-- d3 -->
-  <script src="https://d3js.org/d3.v5.min.js"></script>
-  <script src="https://d3js.org/d3-color.v1.min.js"></script>
-  <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
-  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+		<!-- d3 -->
+		<script src="https://d3js.org/d3.v5.min.js"></script>
+		<script src="https://d3js.org/d3-color.v1.min.js"></script>
+		<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+		<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
-  <style>
-  .links line {
-    stroke: #999;
-    stroke-opacity: 0.6;
-  }
+		<style>
+			.links line {
+				stroke: #999;
+				stroke-opacity: 0.6;
+			}
 
-  .nodes circle {
-    stroke: black	;
-    stroke-width: 0px;
-  }
-	
-</style>
-</head>
+			.nodes circle {
+				stroke: black	;
+				stroke-width: 0px;
+			}
 
-<body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="index.html">Visualizing Computer Science Research Communities</a>
-<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-		
-  </button>
+			#circle circle {
+				fill: none;
+				pointer-events: all;
+			}
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="index.html">App <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="about.html">About</a>
-      </li>
-    </ul>
-  </div>
-  </nav>
+			.group path {
+				fill-opacity: .5;
+			}
 
-  <br>
+			path.chord {
+				stroke: #000;
+				stroke-width: .25px;
+			}
 
-  <div class="container-fluid">
+			#circle:hover path.fade {
+				display: none;
+			}
+		</style>
+	</head>
 
-    <div class="row">
-      <div class="col-4" id="optionDiv">
-        <select class="selectpicker" multiple data-actions-box="true" id="community_picker" title="Choose communities" onChange=changeCommunity(this.value)>
-          <optgroup label="Machine Learning">
-            <option value="ai" data-content="<img src='icons/ai.png' height='24px' width='24px'> Artificial Intelligence">Artificial Intelligence</option>
-            <option value="computational linguistics" data-content="<img src='icons/linguistics.png' height='24px' width='24px'> Computational Linguistics">Computational Linguistics</option>
-            <option value="computer vision" data-content="<img src='icons/computer_vision.png' height='24px' width='24px'> Computer Vision and Pattern Recognition">Computer Vision and Pattern Recognition</option>
-            <option value="data mining" data-content="<img src='icons/data_mining.png' height='24px' width='24px'> Data Mining and Analysis">Data Mining and Analysis</option>
-          </optgroup>
-          <optgroup label="Systems and Networks">
-            <option value="databases" data-content="<img src='icons/databases.png' height='24px' width='24px'> Databases and Information Systems">Databases and Information Systems</option>
-            <option value="systems" data-content="<img src='icons/computer_systems.png' height='24px' width='24px'> Computer Systems">Computer Systems</option>
-            <option value="software systems" data-content="<img src='icons/software_systems.png' height='24px' width='24px'> Software Systems">Software Systems</option>
-            <option value="networks" data-content="<img src='icons/network.png' height='24px' width='24px'> Computer Networks and Wireless Communication">Computer Networks and Wireless Communication</option>
-          </optgroup>
-          <optgroup label="Theory and Algorithms">
-            <option value="security" data-content="<img src='icons/security.png' height='24px' width='24px'> Computer Security and Cryptography">Computer Security and Cryptography</option>
-            <option value="signal processing" data-content="<img src='icons/signal.png' height='24px' width='24px'> Signal Processing">Signal Processing</option>
-            <option value="information theory" data-content="<img src='icons/information.png' height='24px' width='24px'> Information Theory">Information Theory</option>
-            <option value="theory" data-content="<img src='icons/theory.png' height='24px' width='24px'> Theoretical Computer Science">Theoretical Computer Science</option>
-          </optgroup>
-          <optgroup label="Visualization and Interaction">
-            <option value="hci" data-content="<img src='icons/computer.png' height='24px' width='24px'> Human Computer Interaction">Human Computer Interaction</option>
-            <option value="multimedia" data-content="<img src='icons/multimedia.png' height='24px' width='24px'> Multimedia">Multimedia</option>
-            <option value="graphics" data-content="<img src='icons/graphics.png' height='24px' width='24px'> Computer Graphics">Computer Graphics</option>
-            <option value="robotics" data-content="<img src='icons/robotics.png' height='24px' width='24px'> Robotics">Robotics</option>
-          </optgroup>
-          <optgroup label="Biology and Medicine">
-            <option value="bioinformatics" data-content="<img src='icons/bioinformatics.png' height='24px' width='24px'> Bioinformatics and Computational Biology">Bioinformatics and Computational Biology</option>
-            <option value="medical informatics" data-content="<img src='icons/medical.png' height='24px' width='24px'> Medical Informatics">Medical Informatics</option>
-          </optgroup>
-        </select>
-        <select class="selectpicker" multiple data-actions-box="true" id="year_picker" title="Choose years" onChange=changeYears(this.value)>
-          <optgroup label="2010s">
-            <option value="2017">2017</option>
-            <option value="2016">2016</option>
-            <option value="2015">2015</option>
-            <option value="2014">2014</option>
-            <option value="2013">2013</option>
-            <option value="2012">2012</option>
-            <option value="2011">2011</option>
-            <option value="2010">2010</option>
-          </optgroup>
-          <optgroup label="2000s">
-            <option value="2009">2009</option>
-            <option value="2008">2008</option>
-            <option value="2007">2007</option>
-            <option value="2006">2006</option>
-            <option value="2005">2005</option>
-            <option value="2004">2004</option>
-            <option value="2003">2003</option>
-            <option value="2002">2002</option>
-            <option value="2001">2001</option>
-            <option value="2000">2000</option>
-          </optgroup>
-          <optgroup label="1990s">
-            <option value="1999">1999</option>
-            <option value="1998">1998</option>
-            <option value="1997">1997</option>
-            <option value="1996">1996</option>
-            <option value="1995">1995</option>
-            <option value="1994">1994</option>
-            <option value="1993">1993</option>
-            <option value="1992">1992</option>
-            <option value="1991">1991</option>
-            <option value="1990">1990</option>
-          </optgroup>
-        </select>
+	<body>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<a class="navbar-brand" href="index.html">Visualizing Computer Science Research Communities</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+			 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
 
-        <br>
-        <br>
+			</button>
 
-        <h5>Selected Communities</h5>
-        <div id="selectedCommunities" style="word-break: break-all">None</div>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active">
+						<a class="nav-link" href="index.html">App <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="about.html">About</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
 
-        <br>
+		<br>
 
-        <h5>Selected Years</h5>
-        <div id="selectedYears" style="word-break: break-all">None</div>
+		<div class="container-fluid">
 
-        <br>
+			<div class="row">
+				<div class="col-4" id="optionDiv">
+					<select class="selectpicker" multiple data-actions-box="true" id="community_picker" title="Choose communities"
+					 onChange=changeCommunity(this.value)>
+						<optgroup label="Machine Learning">
+							<option value="ai" data-content="<img src='icons/ai.png' height='24px' width='24px'> Artificial Intelligence">Artificial
+								Intelligence</option>
+							<option value="computational linguistics" data-content="<img src='icons/linguistics.png' height='24px' width='24px'> Computational Linguistics">Computational
+								Linguistics</option>
+							<option value="computer vision" data-content="<img src='icons/computer_vision.png' height='24px' width='24px'> Computer Vision and Pattern Recognition">Computer
+								Vision and Pattern Recognition</option>
+							<option value="data mining" data-content="<img src='icons/data_mining.png' height='24px' width='24px'> Data Mining and Analysis">Data
+								Mining and Analysis</option>
+						</optgroup>
+						<optgroup label="Systems and Networks">
+							<option value="databases" data-content="<img src='icons/databases.png' height='24px' width='24px'> Databases and Information Systems">Databases
+								and Information Systems</option>
+							<option value="systems" data-content="<img src='icons/computer_systems.png' height='24px' width='24px'> Computer Systems">Computer
+								Systems</option>
+							<option value="software systems" data-content="<img src='icons/software_systems.png' height='24px' width='24px'> Software Systems">Software
+								Systems</option>
+							<option value="networks" data-content="<img src='icons/network.png' height='24px' width='24px'> Computer Networks and Wireless Communication">Computer
+								Networks and Wireless Communication</option>
+						</optgroup>
+						<optgroup label="Theory and Algorithms">
+							<option value="security" data-content="<img src='icons/security.png' height='24px' width='24px'> Computer Security and Cryptography">Computer
+								Security and Cryptography</option>
+							<option value="signal processing" data-content="<img src='icons/signal.png' height='24px' width='24px'> Signal Processing">Signal
+								Processing</option>
+							<option value="information theory" data-content="<img src='icons/information.png' height='24px' width='24px'> Information Theory">Information
+								Theory</option>
+							<option value="theory" data-content="<img src='icons/theory.png' height='24px' width='24px'> Theoretical Computer Science">Theoretical
+								Computer Science</option>
+						</optgroup>
+						<optgroup label="Visualization and Interaction">
+							<option value="hci" data-content="<img src='icons/computer.png' height='24px' width='24px'> Human Computer Interaction">Human
+								Computer Interaction</option>
+							<option value="multimedia" data-content="<img src='icons/multimedia.png' height='24px' width='24px'> Multimedia">Multimedia</option>
+							<option value="graphics" data-content="<img src='icons/graphics.png' height='24px' width='24px'> Computer Graphics">Computer
+								Graphics</option>
+							<option value="robotics" data-content="<img src='icons/robotics.png' height='24px' width='24px'> Robotics">Robotics</option>
+						</optgroup>
+						<optgroup label="Biology and Medicine">
+							<option value="bioinformatics" data-content="<img src='icons/bioinformatics.png' height='24px' width='24px'> Bioinformatics and Computational Biology">Bioinformatics
+								and Computational Biology</option>
+							<option value="medical informatics" data-content="<img src='icons/medical.png' height='24px' width='24px'> Medical Informatics">Medical
+								Informatics</option>
+						</optgroup>
+					</select>
+					<select class="selectpicker" multiple data-actions-box="true" id="year_picker" title="Choose years" onChange=changeYears(this.value)>
+						<optgroup label="2010s">
+							<option value="2017">2017</option>
+							<option value="2016">2016</option>
+							<option value="2015">2015</option>
+							<option value="2014">2014</option>
+							<option value="2013">2013</option>
+							<option value="2012">2012</option>
+							<option value="2011">2011</option>
+							<option value="2010">2010</option>
+						</optgroup>
+						<optgroup label="2000s">
+							<option value="2009">2009</option>
+							<option value="2008">2008</option>
+							<option value="2007">2007</option>
+							<option value="2006">2006</option>
+							<option value="2005">2005</option>
+							<option value="2004">2004</option>
+							<option value="2003">2003</option>
+							<option value="2002">2002</option>
+							<option value="2001">2001</option>
+							<option value="2000">2000</option>
+						</optgroup>
+						<optgroup label="1990s">
+							<option value="1999">1999</option>
+							<option value="1998">1998</option>
+							<option value="1997">1997</option>
+							<option value="1996">1996</option>
+							<option value="1995">1995</option>
+							<option value="1994">1994</option>
+							<option value="1993">1993</option>
+							<option value="1992">1992</option>
+							<option value="1991">1991</option>
+							<option value="1990">1990</option>
+						</optgroup>
+					</select>
 
-        <h5>Community Color Legend</h5>
-        <div id="communityColors" style="word-break: break-all">
-          <h6>Machine Learning</h6>
-          <svg width="12px" height="12px">
-            <rect width="12px" height="12px" fill="#800000" />
-          </svg> Artificial Intelligence
-          <br >
-          <svg width="12px" height="12px">
-            <rect width="12px" height="12px" fill="#9A6324" />
-          </svg> Computational Linguistics
-          <br >
-          <svg width="12px" height="12px">
-            <rect width="12px" height="12px" fill="#808000" />
-          </svg> Computer Vision
-          <br>
-          <svg width="12px" height="12px">
-            <rect width="12px" height="12px" fill="#469990" />
-          </svg> Data Mining
-          <h6>Systems and Networks</h6>
-          <svg width="12px" height="12px">
-            <rect width="12px" height="12px" fill="#000075" />
-          </svg> Databases
-          <br>
-          <svg width="12px" height="12px">
-            <rect width="12px" height="12px" fill="#E6194B" />
-          </svg> Computer Systems
-          <br>
-          <svg width="12px" height="12px">
-            <rect width="12px" height="12px" fill="#F58231" />
-          </svg> Software Systems
-          <br>
-          <svg width="12px" height="12px">
-            <rect width="12px" height="12px" fill="#BFEF45" />
-          </svg> Computer Networks
-          <h6>Theory and Algorithms</h6>
-          <svg width="12px" height="12px">
-            <rect width="12px" height="12px" fill="#3CB44B" />
-          </svg> Computer Security/Cryptography
-          <br>
-          <svg width="12px" height="12px">
-            <rect width="12px" height="12px" fill="#42D4F4" />
-          </svg> Signal Processing
-          <br>
-          <svg width="12px" height="12px">
-            <rect width="12px" height="12px" fill="#4363D8" />
-          </svg> Information Theory
-          <br>
-          <svg width="12px" height="12px">
-            <rect width="12px" height="12px" fill="#911EB4" />
-          </svg> Theory
-          <h6>Visualization and Interaction</h6>
-          <svg width="12px" height="12px">
-            <rect width="12px" height="12px" fill="#F032E6" />
-          </svg> Human Computer Interaction
-          <br>
-          <svg width="12px" height="12px">
-            <rect width="12px" height="12px" fill="#A9A9A9" />
-          </svg> Multimedia
-          <br>
-          <svg width="12px" height="12px">
-            <rect width="12px" height="12px" fill="#FABEBE" />
-          </svg> Computer Graphics
-          <br>
-          <svg width="12px" height="12px">
-            <rect width="12px" height="12px" fill="#FFD8B1" />
-          </svg> Robotics
-          <h6>Biology and Medicine</h6>
-          <svg width="12px" height="12px">
-            <rect width="12px" height="12px" fill="#AAFFC8" />
-          </svg> Bioinformatics/Computational Biology
-          <br>
-          <svg width="12px" height="12px">
-            <rect width="12px" height="12px" fill="#E6BEFF" />
-          </svg> Medical Informatics
-        </div>
+					<br>
+					<br>
 
-      </div>
-      <div class="col-8" id="chartDiv" style="height: 100%; border: 1px solid black;">
-				<button id = "detail_button">Detail</button>
-				<button id = "overall_button">Overall</button>
-      </div>
+					<h5>Selected Communities</h5>
+					<div id="selectedCommunities" style="word-break: break-all">None</div>
 
-    </div>
-  </div>
+					<br>
 
-  <!-- custom js -->
-  <script>
-  console.log("welcome to cs research communities!");
+					<h5>Selected Years</h5>
+					<div id="selectedYears" style="word-break: break-all">None</div>
 
-  var colors = d3.scaleOrdinal(["ai", "computational linguistics",
-  "computer vision", "data mining", "databases", "systems", "software systems",
-"networks", "security", "signal processing", "information theory", "theory",
-"hci", "multimedia", "graphics", "robotics", "bioinformatics", "medical informatics"]).range(["800000",
-"9A6324", "808000", "469990", "000075", "E6194B", "F58231", "BFEF45", "3CB44B",
-"42D4F4", "4363D8", "911EB4", "F032E6", "A9A9A9", "FABEBE", "FFD8B1",
-"AAFFC3", "E6BEFF"]);
+					<br>
 
-  function changeLegend(val) {
-    // Prints the legend
-  }
+					<h5>Community Color Legend</h5>
+					<div id="communityColors" style="word-break: break-all">
+						<h6>Machine Learning</h6>
+						<svg width="12px" height="12px">
+							<rect width="12px" height="12px" fill="#800000" />
+						</svg> Artificial Intelligence
+						<br>
+						<svg width="12px" height="12px">
+							<rect width="12px" height="12px" fill="#9A6324" />
+						</svg> Computational Linguistics
+						<br>
+						<svg width="12px" height="12px">
+							<rect width="12px" height="12px" fill="#808000" />
+						</svg> Computer Vision
+						<br>
+						<svg width="12px" height="12px">
+							<rect width="12px" height="12px" fill="#469990" />
+						</svg> Data Mining
+						<h6>Systems and Networks</h6>
+						<svg width="12px" height="12px">
+							<rect width="12px" height="12px" fill="#000075" />
+						</svg> Databases
+						<br>
+						<svg width="12px" height="12px">
+							<rect width="12px" height="12px" fill="#E6194B" />
+						</svg> Computer Systems
+						<br>
+						<svg width="12px" height="12px">
+							<rect width="12px" height="12px" fill="#F58231" />
+						</svg> Software Systems
+						<br>
+						<svg width="12px" height="12px">
+							<rect width="12px" height="12px" fill="#BFEF45" />
+						</svg> Computer Networks
+						<h6>Theory and Algorithms</h6>
+						<svg width="12px" height="12px">
+							<rect width="12px" height="12px" fill="#3CB44B" />
+						</svg> Computer Security/Cryptography
+						<br>
+						<svg width="12px" height="12px">
+							<rect width="12px" height="12px" fill="#42D4F4" />
+						</svg> Signal Processing
+						<br>
+						<svg width="12px" height="12px">
+							<rect width="12px" height="12px" fill="#4363D8" />
+						</svg> Information Theory
+						<br>
+						<svg width="12px" height="12px">
+							<rect width="12px" height="12px" fill="#911EB4" />
+						</svg> Theory
+						<h6>Visualization and Interaction</h6>
+						<svg width="12px" height="12px">
+							<rect width="12px" height="12px" fill="#F032E6" />
+						</svg> Human Computer Interaction
+						<br>
+						<svg width="12px" height="12px">
+							<rect width="12px" height="12px" fill="#A9A9A9" />
+						</svg> Multimedia
+						<br>
+						<svg width="12px" height="12px">
+							<rect width="12px" height="12px" fill="#FABEBE" />
+						</svg> Computer Graphics
+						<br>
+						<svg width="12px" height="12px">
+							<rect width="12px" height="12px" fill="#FFD8B1" />
+						</svg> Robotics
+						<h6>Biology and Medicine</h6>
+						<svg width="12px" height="12px">
+							<rect width="12px" height="12px" fill="#AAFFC8" />
+						</svg> Bioinformatics/Computational Biology
+						<br>
+						<svg width="12px" height="12px">
+							<rect width="12px" height="12px" fill="#E6BEFF" />
+						</svg> Medical Informatics
+					</div>
+				</div>
 
-  communityStore = [];
-  yearStore = [];
-  function changeCommunity(val) {
-    // Prints the value of selected items in community picker select
-    s = $('#community_picker').val();
-    document.getElementById('selectedCommunities').innerHTML = s.toString();
-    communityStore = s;
-  }
-  function changeYears(val) {
-    // Prints the value of selected items in year picker select
-    s = $('#year_picker').val();
-    document.getElementById('selectedYears').innerHTML = s.toString();
-    yearStore = s;
-  }
+				<div class="col-8" id="chartDiv" style="height: 100%; border: 1px solid black;">
+					<button id="detail_button">Detail</button>
+					<button id="overall_button">Overall</button>
+				</div>
+				<script type="text/javascript" src="js/overall_graph.js"></script>
+			</div>
+		</div>
 
-  </script>
+		<!-- custom js -->
+		<!-- <script>
+			console.log("welcome to cs research communities!");
 
-  <script>
-  var width = $("#chartDiv").width();
-  var height = $(window).height() * 0.8;
+			var colors = d3.scaleOrdinal(["ai", "computational linguistics",
+				"computer vision", "data mining", "databases", "systems", "software systems",
+				"networks", "security", "signal processing", "information theory", "theory",
+				"hci", "multimedia", "graphics", "robotics", "bioinformatics", "medical informatics"
+			]).range(["800000",
+				"9A6324", "808000", "469990", "000075", "E6194B", "F58231", "BFEF45", "3CB44B",
+				"42D4F4", "4363D8", "911EB4", "F032E6", "A9A9A9", "FABEBE", "FFD8B1",
+				"AAFFC3", "E6BEFF"
+			]);
 
-  var svg = d3.select("#chartDiv")
-              .append("svg")
-              .attr("width", width)
-              .attr("height", height);
+			function changeLegend(val) {
+				// Prints the legend
+			}
 
-              d3.csv("data/citations.csv")
-              .then(function(data) {
-                console.log(data);
-              });
+			communityStore = [];
+			yearStore = [];
 
-  var radius = 5;
+			function changeCommunity(val) {
+				// Prints the value of selected items in community picker select
+				s = $('#community_picker').val();
+				document.getElementById('selectedCommunities').innerHTML = s.toString();
+				communityStore = s;
+			}
 
-var nodes_data =  [
-    {"name": "Lillian", "sex": "F"},
-    {"name": "Gordon", "sex": "M"},
-    {"name": "Sylvester", "sex": "M"},
-    {"name": "Mary", "sex": "F"},
-    {"name": "Helen", "sex": "F"},
-    {"name": "Jamie", "sex": "M"},
-    {"name": "Jessie", "sex": "F"},
-    {"name": "Ashton", "sex": "M"},
-    {"name": "Duncan", "sex": "M"},
-    {"name": "Evette", "sex": "F"},
-    {"name": "Mauer", "sex": "M"},
-    {"name": "Fray", "sex": "F"},
-    {"name": "Duke", "sex": "M"},
-    {"name": "Baron", "sex": "M"},
-    {"name": "Infante", "sex": "M"},
-    {"name": "Percy", "sex": "M"},
-    {"name": "Cynthia", "sex": "F"},
-    {"name": "Feyton", "sex": "M"},
-    {"name": "Lesley", "sex": "F"},
-    {"name": "Yvette", "sex": "F"},
-    {"name": "Maria", "sex": "F"},
-    {"name": "Lexy", "sex": "F"},
-    {"name": "Peter", "sex": "M"},
-    {"name": "Ashley", "sex": "F"},
-    {"name": "Finkler", "sex": "M"},
-    {"name": "Damo", "sex": "M"},
-    {"name": "Imogen", "sex": "F"}
-    ]
+			function changeYears(val) {
+				// Prints the value of selected items in year picker select
+				s = $('#year_picker').val();
+				document.getElementById('selectedYears').innerHTML = s.toString();
+				yearStore = s;
+			}
+		</script>
 
-//Sample links data
-//type: A for Ally, E for Enemy
-var links_data = [
-	{"source": "Sylvester", "target": "Gordon", "type":"A" },
-    {"source": "Sylvester", "target": "Lillian", "type":"A" },
-    {"source": "Sylvester", "target": "Mary", "type":"A"},
-    {"source": "Sylvester", "target": "Jamie", "type":"A"},
-    {"source": "Sylvester", "target": "Jessie", "type":"A"},
-    {"source": "Sylvester", "target": "Helen", "type":"A"},
-    {"source": "Helen", "target": "Gordon", "type":"A"},
-    {"source": "Mary", "target": "Lillian", "type":"A"},
-    {"source": "Ashton", "target": "Mary", "type":"A"},
-    {"source": "Duncan", "target": "Jamie", "type":"A"},
-    {"source": "Gordon", "target": "Jessie", "type":"A"},
-    {"source": "Sylvester", "target": "Fray", "type":"E"},
-    {"source": "Fray", "target": "Mauer", "type":"A"},
-    {"source": "Fray", "target": "Cynthia", "type":"A"},
-    {"source": "Fray", "target": "Percy", "type":"A"},
-    {"source": "Percy", "target": "Cynthia", "type":"A"},
-    {"source": "Infante", "target": "Duke", "type":"A"},
-    {"source": "Duke", "target": "Gordon", "type":"A"},
-    {"source": "Duke", "target": "Sylvester", "type":"A"},
-    {"source": "Baron", "target": "Duke", "type":"A"},
-    {"source": "Baron", "target": "Sylvester", "type":"E"},
-    {"source": "Evette", "target": "Sylvester", "type":"E"},
-    {"source": "Cynthia", "target": "Sylvester", "type":"E"},
-    {"source": "Cynthia", "target": "Jamie", "type":"E"},
-    {"source": "Mauer", "target": "Jessie", "type":"E"},
-    {"source": "Duke", "target": "Lexy", "type":"A"},
-    {"source": "Feyton", "target": "Lexy", "type":"A"},
-    {"source": "Maria", "target": "Feyton", "type":"A"},
-    {"source": "Baron", "target": "Yvette", "type":"E"},
-    {"source": "Evette", "target": "Maria", "type":"E"},
-    {"source": "Cynthia", "target": "Yvette", "type":"E"},
-    {"source": "Maria", "target": "Jamie", "type":"E"},
-    {"source": "Maria", "target": "Lesley", "type":"E"},
-    {"source": "Ashley", "target": "Damo", "type":"A"},
-    {"source": "Damo", "target": "Lexy", "type":"A"},
-    {"source": "Maria", "target": "Feyton", "type":"A"},
-    {"source": "Finkler", "target": "Ashley", "type":"E"},
-    {"source": "Sylvester", "target": "Maria", "type":"E"},
-    {"source": "Peter", "target": "Finkler", "type":"E"},
-    {"source": "Ashley", "target": "Gordon", "type":"E"},
-    {"source": "Maria", "target": "Imogen", "type":"E"}
+		<script>
+			var width = $("#chartDiv").width();
+			var height = $(window).height() * 0.8;
 
-]
+			var svg = d3.select("#chartDiv")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height);
+
+			d3.csv("data/citations.csv")
+				.then(function(data) {
+					console.log(data);
+				});
+
+			var radius = 5;
+
+			var nodes_data = [{
+					"name": "Lillian",
+					"sex": "F"
+				},
+				{
+					"name": "Gordon",
+					"sex": "M"
+				},
+				{
+					"name": "Sylvester",
+					"sex": "M"
+				},
+				{
+					"name": "Mary",
+					"sex": "F"
+				},
+				{
+					"name": "Helen",
+					"sex": "F"
+				},
+				{
+					"name": "Jamie",
+					"sex": "M"
+				},
+				{
+					"name": "Jessie",
+					"sex": "F"
+				},
+				{
+					"name": "Ashton",
+					"sex": "M"
+				},
+				{
+					"name": "Duncan",
+					"sex": "M"
+				},
+				{
+					"name": "Evette",
+					"sex": "F"
+				},
+				{
+					"name": "Mauer",
+					"sex": "M"
+				},
+				{
+					"name": "Fray",
+					"sex": "F"
+				},
+				{
+					"name": "Duke",
+					"sex": "M"
+				},
+				{
+					"name": "Baron",
+					"sex": "M"
+				},
+				{
+					"name": "Infante",
+					"sex": "M"
+				},
+				{
+					"name": "Percy",
+					"sex": "M"
+				},
+				{
+					"name": "Cynthia",
+					"sex": "F"
+				},
+				{
+					"name": "Feyton",
+					"sex": "M"
+				},
+				{
+					"name": "Lesley",
+					"sex": "F"
+				},
+				{
+					"name": "Yvette",
+					"sex": "F"
+				},
+				{
+					"name": "Maria",
+					"sex": "F"
+				},
+				{
+					"name": "Lexy",
+					"sex": "F"
+				},
+				{
+					"name": "Peter",
+					"sex": "M"
+				},
+				{
+					"name": "Ashley",
+					"sex": "F"
+				},
+				{
+					"name": "Finkler",
+					"sex": "M"
+				},
+				{
+					"name": "Damo",
+					"sex": "M"
+				},
+				{
+					"name": "Imogen",
+					"sex": "F"
+				}
+			]
+
+			//Sample links data
+			//type: A for Ally, E for Enemy
+			var links_data = [{
+					"source": "Sylvester",
+					"target": "Gordon",
+					"type": "A"
+				},
+				{
+					"source": "Sylvester",
+					"target": "Lillian",
+					"type": "A"
+				},
+				{
+					"source": "Sylvester",
+					"target": "Mary",
+					"type": "A"
+				},
+				{
+					"source": "Sylvester",
+					"target": "Jamie",
+					"type": "A"
+				},
+				{
+					"source": "Sylvester",
+					"target": "Jessie",
+					"type": "A"
+				},
+				{
+					"source": "Sylvester",
+					"target": "Helen",
+					"type": "A"
+				},
+				{
+					"source": "Helen",
+					"target": "Gordon",
+					"type": "A"
+				},
+				{
+					"source": "Mary",
+					"target": "Lillian",
+					"type": "A"
+				},
+				{
+					"source": "Ashton",
+					"target": "Mary",
+					"type": "A"
+				},
+				{
+					"source": "Duncan",
+					"target": "Jamie",
+					"type": "A"
+				},
+				{
+					"source": "Gordon",
+					"target": "Jessie",
+					"type": "A"
+				},
+				{
+					"source": "Sylvester",
+					"target": "Fray",
+					"type": "E"
+				},
+				{
+					"source": "Fray",
+					"target": "Mauer",
+					"type": "A"
+				},
+				{
+					"source": "Fray",
+					"target": "Cynthia",
+					"type": "A"
+				},
+				{
+					"source": "Fray",
+					"target": "Percy",
+					"type": "A"
+				},
+				{
+					"source": "Percy",
+					"target": "Cynthia",
+					"type": "A"
+				},
+				{
+					"source": "Infante",
+					"target": "Duke",
+					"type": "A"
+				},
+				{
+					"source": "Duke",
+					"target": "Gordon",
+					"type": "A"
+				},
+				{
+					"source": "Duke",
+					"target": "Sylvester",
+					"type": "A"
+				},
+				{
+					"source": "Baron",
+					"target": "Duke",
+					"type": "A"
+				},
+				{
+					"source": "Baron",
+					"target": "Sylvester",
+					"type": "E"
+				},
+				{
+					"source": "Evette",
+					"target": "Sylvester",
+					"type": "E"
+				},
+				{
+					"source": "Cynthia",
+					"target": "Sylvester",
+					"type": "E"
+				},
+				{
+					"source": "Cynthia",
+					"target": "Jamie",
+					"type": "E"
+				},
+				{
+					"source": "Mauer",
+					"target": "Jessie",
+					"type": "E"
+				},
+				{
+					"source": "Duke",
+					"target": "Lexy",
+					"type": "A"
+				},
+				{
+					"source": "Feyton",
+					"target": "Lexy",
+					"type": "A"
+				},
+				{
+					"source": "Maria",
+					"target": "Feyton",
+					"type": "A"
+				},
+				{
+					"source": "Baron",
+					"target": "Yvette",
+					"type": "E"
+				},
+				{
+					"source": "Evette",
+					"target": "Maria",
+					"type": "E"
+				},
+				{
+					"source": "Cynthia",
+					"target": "Yvette",
+					"type": "E"
+				},
+				{
+					"source": "Maria",
+					"target": "Jamie",
+					"type": "E"
+				},
+				{
+					"source": "Maria",
+					"target": "Lesley",
+					"type": "E"
+				},
+				{
+					"source": "Ashley",
+					"target": "Damo",
+					"type": "A"
+				},
+				{
+					"source": "Damo",
+					"target": "Lexy",
+					"type": "A"
+				},
+				{
+					"source": "Maria",
+					"target": "Feyton",
+					"type": "A"
+				},
+				{
+					"source": "Finkler",
+					"target": "Ashley",
+					"type": "E"
+				},
+				{
+					"source": "Sylvester",
+					"target": "Maria",
+					"type": "E"
+				},
+				{
+					"source": "Peter",
+					"target": "Finkler",
+					"type": "E"
+				},
+				{
+					"source": "Ashley",
+					"target": "Gordon",
+					"type": "E"
+				},
+				{
+					"source": "Maria",
+					"target": "Imogen",
+					"type": "E"
+				}
+
+			]
 
 
-//set up the simulation and add forces
-var simulation = d3.forceSimulation()
-					.nodes(nodes_data);
+			//set up the simulation and add forces
+			var simulation = d3.forceSimulation()
+				.nodes(nodes_data);
 
-var link_force =  d3.forceLink(links_data)
-                        .id(function(d) { return d.name; });
+			var link_force = d3.forceLink(links_data)
+				.id(function(d) {
+					return d.name;
+				});
 
-var charge_force = d3.forceManyBody()
-    .strength(-100);
+			var charge_force = d3.forceManyBody()
+				.strength(-100);
 
-var center_force = d3.forceCenter(width / 2, height / 2);
+			var center_force = d3.forceCenter(width / 2, height / 2);
 
-simulation
-    .force("charge_force", charge_force)
-    .force("center_force", center_force)
-    .force("links",link_force);
-
-
-//add tick instructions:
-simulation.on("tick", tickActions );
-
-//add encompassing group for the zoom
-var g = svg.append("g")
-    .attr("class", "everything");
-
-//draw lines for the links
-var link = g.append("g")
-      .attr("class", "links")
-    .selectAll("line")
-    .data(links_data)
-    .enter().append("line")
-      .attr("stroke-width", 2)
-      .style("stroke", linkColour);
-
-//draw circles for the nodes
-var node = g.append("g")
-        .attr("class", "nodes")
-        .selectAll("circle")
-        .data(nodes_data)
-        .enter()
-        .append("circle")
-        .attr("r", radius)
-        .attr("fill", circleColour);
-
-var label = node.append("text")
-                .attr("dy", ".35em")
-                .text(function(d) { return d.name; });
-//add drag capabilities
-var drag_handler = d3.drag()
-	.on("start", drag_start)
-	.on("drag", drag_drag)
-	.on("end", drag_end);
-
-drag_handler(node);
+			simulation
+				.force("charge_force", charge_force)
+				.force("center_force", center_force)
+				.force("links", link_force);
 
 
-//add zoom capabilities
-var zoom_handler = d3.zoom()
-    .on("zoom", zoom_actions);
+			//add tick instructions:
+			simulation.on("tick", tickActions);
 
-zoom_handler(svg);
+			//add encompassing group for the zoom
+			var g = svg.append("g")
+				.attr("class", "everything");
 
-d3.select('#detail_button').on('click', function () {
-  // Update code here
-  console.log("detailButton");
-});
+			//draw lines for the links
+			var link = g.append("g")
+				.attr("class", "links")
+				.selectAll("line")
+				.data(links_data)
+				.enter().append("line")
+				.attr("stroke-width", 2)
+				.style("stroke", linkColour);
 
-d3.select('#overall_button').on('click', function () {
-  // Update code here
-  console.log("overallButton");
-});
+			//draw circles for the nodes
+			var node = g.append("g")
+				.attr("class", "nodes")
+				.selectAll("circle")
+				.data(nodes_data)
+				.enter()
+				.append("circle")
+				.attr("r", radius)
+				.attr("fill", circleColour);
 
-/** Functions **/
+			var label = node.append("text")
+				.attr("dy", ".35em")
+				.text(function(d) {
+					return d.name;
+				});
+			//add drag capabilities
+			var drag_handler = d3.drag()
+				.on("start", drag_start)
+				.on("drag", drag_drag)
+				.on("end", drag_end);
 
-//Function to choose what color circle we have
-//Let's return blue for males and red for females
-function circleColour(d){
-	if(d.sex =="M"){
-		return "blue";
-	} else {
-		return "pink";
-	}
-}
+			drag_handler(node);
 
-//Function to choose the line colour and thickness
-//If the link type is "A" return green
-//If the link type is "E" return red
-function linkColour(d){
-	if(d.type == "A"){
-		return "green";
-	} else {
-		return "red";
-	}
-}
 
-//Drag functions
-//d is the node
-function drag_start(d) {
- if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-    d.fx = d.x;
-    d.fy = d.y;
-}
+			//add zoom capabilities
+			var zoom_handler = d3.zoom()
+				.on("zoom", zoom_actions);
 
-//make sure you can't drag the circle outside the box
-function drag_drag(d) {
-  d.fx = d3.event.x;
-  d.fy = d3.event.y;
-}
+			zoom_handler(svg);
 
-function drag_end(d) {
-  if (!d3.event.active) simulation.alphaTarget(0);
-  d.fx = null;
-  d.fy = null;
-}
+			d3.select('#detail_button').on('click', function() {
+				// Update code here
+				console.log("detailButton");
+			});
 
-//Zoom functions
-function zoom_actions(){
-    g.attr("transform", d3.event.transform)
-}
+			d3.select('#overall_button').on('click', function() {
+				// Update code here
+				console.log("overallButton");
+			});
 
-function tickActions() {
-    //update circle positions each tick of the simulation
-       node
-        .attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; });
+			/** Functions **/
 
-    //update link positions
-    link
-        .attr("x1", function(d) { return d.source.x; })
-        .attr("y1", function(d) { return d.source.y; })
-        .attr("x2", function(d) { return d.target.x; })
-        .attr("y2", function(d) { return d.target.y; });
-}
+			//Function to choose what color circle we have
+			//Let's return blue for males and red for females
+			function circleColour(d) {
+				if (d.sex == "M") {
+					return "blue";
+				} else {
+					return "pink";
+				}
+			}
 
-  </script>
-""</body>
+			//Function to choose the line colour and thickness
+			//If the link type is "A" return green
+			//If the link type is "E" return red
+			function linkColour(d) {
+				if (d.type == "A") {
+					return "green";
+				} else {
+					return "red";
+				}
+			}
 
+			//Drag functions
+			//d is the node
+			function drag_start(d) {
+				if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+				d.fx = d.x;
+				d.fy = d.y;
+			}
+
+			//make sure you can't drag the circle outside the box
+			function drag_drag(d) {
+				d.fx = d3.event.x;
+				d.fy = d3.event.y;
+			}
+
+			function drag_end(d) {
+				if (!d3.event.active) simulation.alphaTarget(0);
+				d.fx = null;
+				d.fy = null;
+			}
+
+			//Zoom functions
+			function zoom_actions() {
+				g.attr("transform", d3.event.transform)
+			}
+
+			function tickActions() {
+				//update circle positions each tick of the simulation
+				node
+					.attr("cx", function(d) {
+						return d.x;
+					})
+					.attr("cy", function(d) {
+						return d.y;
+					});
+
+				//update link positions
+				link
+					.attr("x1", function(d) {
+						return d.source.x;
+					})
+					.attr("y1", function(d) {
+						return d.source.y;
+					})
+					.attr("x2", function(d) {
+						return d.target.x;
+					})
+					.attr("y2", function(d) {
+						return d.target.y;
+					});
+			} -->
+		<!-- </script> -->
+	</body>
 </html>
